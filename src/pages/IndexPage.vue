@@ -99,13 +99,35 @@ const itemsNotClickable = ref(true)
 
 const assignRectangles = () => {
   rectangles.value = []
+  debugger
+  let lvlAdjustemend = gameStatusStore.round % 3 === 0 ? 3 : gameStatusStore.round % 3
 
   for (let i = 0; i < countOfSquares.value; i++) {
     rectangles.value.push({
       id: i,
-      isValid: Math.random() < 0.4,
+      isValid: Math.random() < 0.15 + 0.15 * lvlAdjustemend,
       isClicked: false,
     })
+  }
+
+  // Check if only one square is valid
+  if (rectangles.value.filter((p) => p.isValid).length === 1) {
+    // Find non-valid squares
+    const nonValidSquares = rectangles.value.filter((p) => !p.isValid)
+    // Select random non-valid square
+    const randomSquare = nonValidSquares[Math.floor(Math.random() * nonValidSquares.length)]
+    // Make it valid
+    randomSquare.isValid = true
+  }
+
+  // Check if only one square is not valid
+  if (rectangles.value.filter((p) => !p.isValid).length === 1) {
+    // Find valid squares
+    const validSquares = rectangles.value.filter((p) => p.isValid)
+    // Select random valid square
+    const randomSquare = validSquares[Math.floor(Math.random() * validSquares.length)]
+    // Make it not valid
+    randomSquare.isValid = false
   }
 }
 
@@ -130,7 +152,9 @@ const startGame = () => {
   }, 2000)
 }
 const nextLevel = () => {
-  columns.value++
+  if (gameStatusStore.round % 3 === 1 && gameStatusStore.round != 1) {
+    columns.value++
+  }
   startGame()
 }
 
@@ -150,6 +174,7 @@ const itemClicked = (id) => {
     console.log('Item' + id + ' is clicked')
     if (isGameWon.value) {
       gameStatusStore.endGame()
+      gameStatusStore.round++
       wonDialog.value = true
     }
   } catch (error) {
@@ -172,17 +197,17 @@ defineOptions({
 .notClicked {
   transition: 1s;
 
-  background-color: #008484;
+  background-color: #259999;
 }
 
 .badClicked {
   transition: 1s;
-  background-color: #d80909;
+  background-color: #d84848;
 }
 
 .goodClicked {
   transition: 1s;
-  background-color: #0077ff;
+  background-color: #599ff0;
 }
 
 .smallDiv3 {
