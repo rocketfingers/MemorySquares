@@ -99,7 +99,7 @@ const itemsNotClickable = ref(true)
 
 const assignRectangles = () => {
   rectangles.value = []
-  debugger
+
   let lvlAdjustemend = gameStatusStore.round % 3 === 0 ? 3 : gameStatusStore.round % 3
 
   for (let i = 0; i < countOfSquares.value; i++) {
