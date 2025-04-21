@@ -1,6 +1,6 @@
 <template>
   <div v-show="anyGameEverStarted" class="status-box-inner">
-    <q-chip class="q-mb-sm" color="purple" text-color="white" icon="casino">
+    <q-chip class="q-mb-sm" color="accent" text-color="white" icon="casino">
       Round {{ gameStatusStore.round }}
     </q-chip>
     <q-circular-progress
@@ -16,9 +16,9 @@
       {{ percentageSolved }}%
     </q-circular-progress>
     Game:
-    <q-chip color="purple" text-color="white" icon="alarm" :label="currentGameTime" />
+    <q-chip color="accent" text-color="white" icon="alarm" :label="currentGameTime" />
     Total:
-    <q-chip color="purple" text-color="white" icon="alarm" :label="gameStatusStore.totalGameTime" />
+    <q-chip color="accent" text-color="white" icon="alarm" :label="gameStatusStore.totalGameTime" />
   </div>
 </template>
 
@@ -34,7 +34,7 @@ const props = defineProps({ solved: Number, total: Number })
 
 const percentageSolved = computed(() => {
   try {
-    return ((props.solved / props.total) * 100).toFixed(0)
+    return Number.parseInt(((props.solved / props.total) * 100).toFixed(0))
   } catch (error) {
     console.log('computed percentageSolved' + error)
     return 0
