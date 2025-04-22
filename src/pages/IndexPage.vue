@@ -1,12 +1,24 @@
 <template>
   <q-page class="flex flex-center">
-    <q-btn
-      color="primary"
-      icon="sports_score"
-      label="Start"
-      v-show="isStartShowned"
-      @click="startGame()"
-    />
+    <div class="column items-center q-gutter-y-md">
+      <q-btn
+        color="primary"
+        icon="sports_score"
+        label="Start"
+        v-show="isStartShowned"
+        @click="startGame()"
+        class="fixed-width-btn"
+      />
+      <q-btn
+        color="secondary"
+        icon="history"
+        label="Game History"
+        v-show="isStartShowned"
+        @click="showHistoryDialog = true"
+        class="fixed-width-btn"
+      />
+    </div>
+
     <div v-show="isBoardShowned" class="mainDiv" :class="{ ['grid-container' + columns]: true }">
       <div
         v-ripple
@@ -59,6 +71,11 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <!-- Game History Dialog -->
+    <q-dialog v-if="showHistoryDialog" v-model="showHistoryDialog">
+      <GameHistoryDialog />
+    </q-dialog>
   </q-page>
 </template>
 
@@ -67,6 +84,9 @@ import { computed, ref } from 'vue'
 import StatusBox from 'src/components/StatusBox.vue'
 import { useGameStatusStore } from 'src/stores/gameStatusStore'
 import { useTimer } from '../composables/timerComposable.js'
+import { gameResults } from 'src/gameResult.js'
+import GameHistoryDialog from 'src/components/GameHistoryDialog.vue' // <-- Add this import
+
 // eslint-disable-next-line no-unused-vars
 const timer = useTimer()
 
@@ -77,6 +97,7 @@ const lostDialog = ref(false)
 const wonDialog = ref(false)
 const isStartShowned = ref(true)
 const isBoardShowned = ref(false)
+const showHistoryDialog = ref(false) // <-- Add this ref
 
 const columns = ref(3)
 const countOfSquares = computed(() => {
@@ -167,13 +188,13 @@ const itemClicked = (id) => {
     item.isClicked = true
 
     if (isGameLost.value) {
-      gameStatusStore.endGame()
+      gameStatusStore.endGame(gameResults.LOSE)
       lostDialog.value = true
       return
     }
     console.log('Item' + id + ' is clicked')
     if (isGameWon.value) {
-      gameStatusStore.endGame()
+      gameStatusStore.endGame(gameResults.WIN)
       gameStatusStore.round++
       wonDialog.value = true
     }
