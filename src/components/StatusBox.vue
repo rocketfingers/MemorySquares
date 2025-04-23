@@ -1,5 +1,5 @@
 <template>
-  <div v-show="anyGameEverStarted" class="status-box-inner">
+  <div v-show="anyGameEverStarted" class="status-box-inner shadow-4 q-mx-xs">
     <q-chip class="q-mb-sm" color="accent" text-color="white" icon="casino">
       Round {{ gameStatusStore.round }}
     </q-chip>
@@ -15,10 +15,18 @@
     >
       {{ percentageSolved }}%
     </q-circular-progress>
-    Game:
-    <q-chip color="accent" text-color="white" icon="alarm" :label="currentGameTime" />
-    Total:
-    <q-chip color="accent" text-color="white" icon="alarm" :label="gameStatusStore.totalGameTime" />
+    <div>
+      <q-chip color="accent" text-color="white" icon="alarm" :label="'Game: ' + currentGameTime" />
+    </div>
+
+    <div>
+      <q-chip
+        color="accent"
+        text-color="white"
+        icon="alarm"
+        :label="'Total:' + gameStatusStore.totalGameTime"
+      />
+    </div>
   </div>
 </template>
 
@@ -48,6 +56,7 @@ const percentageSolved = computed(() => {
     display: flex;
     align-items: center;
     justify-content: space-around;
+    flex-wrap: wrap;
   }
 
   @media (min-width: 751px) {
