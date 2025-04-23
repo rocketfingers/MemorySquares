@@ -12,6 +12,8 @@
   .q-table__separator col {
     max-width: 10px !important;
   }
-
+  .q-table {
+    width: 90% !important;
+  }
   /* Move pagination to left */
 }

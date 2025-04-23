@@ -1,11 +1,11 @@
 <template>
   <div>
-    <q-card style="min-width: 450px; max-width: 90vw">
+    <q-card style="min-width: 450px; max-width: 95vw">
       <q-card-section class="bg-accent text-white">
         <div class="text-h6">Game History</div>
       </q-card-section>
       <q-card-section>
-        <div class="paginationMobile">
+        <div class="sizeMobile">
           <div v-if="history.length > 0">
             <q-table
               :rows="history"
@@ -77,8 +77,8 @@ history = useHistory().getGameHistory()
 </script>
 <style scoped>
 @media (max-width: 750px) {
-  .paginationMobile {
-    width: 99%;
+  .sizeMobile {
+    width: 95vw;
   }
 }
 </style>
