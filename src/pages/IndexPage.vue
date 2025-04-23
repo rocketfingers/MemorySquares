@@ -123,6 +123,7 @@ const assignRectangles = () => {
 
   let lvlAdjustemend = gameStatusStore.round % 3 === 0 ? 3 : gameStatusStore.round % 3
 
+  // Create initial rectangles
   for (let i = 0; i < countOfSquares.value; i++) {
     rectangles.value.push({
       id: i,
@@ -131,24 +132,23 @@ const assignRectangles = () => {
     })
   }
 
-  // Check if only one square is valid
-  if (rectangles.value.filter((p) => p.isValid).length === 1) {
-    // Find non-valid squares
+  // Count valid rectangles
+  let validCount = rectangles.value.filter((p) => p.isValid).length
+
+  // Ensure minimum 2 valid rectangles
+  while (validCount < 2) {
     const nonValidSquares = rectangles.value.filter((p) => !p.isValid)
-    // Select random non-valid square
     const randomSquare = nonValidSquares[Math.floor(Math.random() * nonValidSquares.length)]
-    // Make it valid
     randomSquare.isValid = true
+    validCount++
   }
 
-  // Check if only one square is not valid
-  if (rectangles.value.filter((p) => !p.isValid).length === 1) {
-    // Find valid squares
+  // Ensure minimum 2 invalid rectangles
+  while (validCount > countOfSquares.value - 2) {
     const validSquares = rectangles.value.filter((p) => p.isValid)
-    // Select random valid square
     const randomSquare = validSquares[Math.floor(Math.random() * validSquares.length)]
-    // Make it not valid
     randomSquare.isValid = false
+    validCount--
   }
 }
 
