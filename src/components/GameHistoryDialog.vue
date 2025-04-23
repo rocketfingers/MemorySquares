@@ -5,18 +5,26 @@
         <div class="text-h6">Game History</div>
       </q-card-section>
       <q-card-section>
-        <q-table
-          v-if="history.length > 0"
-          :rows="history"
-          :columns="columns"
-          row-key="timestamp"
-          flat
-          dense
-          :pagination="{ rowsPerPage: 10 }"
-        />
-        <div v-else class="text-grey text-center q-pa-md">No game history found.</div>
+        <div class="paginationMobile">
+          <div v-if="history.length > 0">
+            <q-table
+              :rows="history"
+              :columns="columns"
+              row-key="timestamp"
+              flat
+              dense
+              hide-bottom
+              v-model:pagination="pagination"
+            />
+            <div v-if="pagesNumber > 1" class="q-mt-xs">
+              <q-pagination v-model="pagination.page" color="grey-8" :max="pagesNumber" size="sm" />
+            </div>
+          </div>
+
+          <div v-else class="text-grey text-center q-pa-md">No game history found.</div>
+        </div>
       </q-card-section>
-      <q-card-actions align="right">
+      <q-card-actions align="left">
         <q-btn flat label="Close" color="primary" v-close-popup />
       </q-card-actions>
     </q-card>
@@ -26,17 +34,11 @@
 <script setup>
 import { useHistory } from 'src/composables/historyComposable'
 import { gameResults } from 'src/gameResult'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const columns = [
   { name: 'round', label: 'Round', field: 'round', align: 'left' },
-  { name: 'time', label: 'Game Time', field: (row) => row.time ?? row.gameTime, align: 'left' },
-  {
-    name: 'totalGameTime',
-    label: 'Total Time',
-    field: (row) => row.totalGameTime,
-    align: 'left',
-  },
+  { name: 'time', label: 'Time(s)', field: (row) => row.time ?? row.gameTime, align: 'left' },
   {
     name: 'result',
     label: 'Result',
@@ -59,7 +61,24 @@ const columns = [
     align: 'left',
   },
 ]
+
+const pagination = ref({
+  sortBy: 'desc',
+  descending: false,
+  page: 1,
+  rowsPerPage: 10,
+  // rowsNumber: xx if getting data from a server
+})
+const pagesNumber = computed(() => Math.ceil(history.value.length / pagination.value.rowsPerPage))
+
 let history = ref([])
 // eslint-disable-next-line vue/no-ref-as-operand
 history = useHistory().getGameHistory()
 </script>
+<style scoped>
+@media (max-width: 750px) {
+  .paginationMobile {
+    width: 99%;
+  }
+}
+</style>
