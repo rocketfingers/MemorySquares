@@ -2,6 +2,10 @@
 .thumbs.db
 node_modules
 
+# CI directories
+.vercel
+.netlify
+
 # Quasar core related directories
 .quasar
 /dist
