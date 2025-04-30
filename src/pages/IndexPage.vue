@@ -18,7 +18,7 @@
         class="fixed-width-btn"
       />
     </div>
-    <ResultsBox />
+    <ResultsBox v-show="isBoardShowned" />
     <div
       v-show="isBoardShowned"
       class="mainDiv q-mt-xs"
@@ -38,7 +38,7 @@
         v-for="item in rectangles"
       ></div>
     </div>
-    <StatusBox :solved="countOfValidClicked" :total="countOfValid" />
+    <StatusBox v-show="isBoardShowned" :solved="countOfValidClicked" :total="countOfValid" />
 
     <q-dialog v-model="lostDialog" persistent>
       <q-card>
@@ -47,11 +47,27 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          Unfortunately, you clicked wrong square. Current level will be restared.
+          Unfortunately, you clicked wrong square. You can restart level or go to menu.
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Restart game" @click="startGame()" color="primary" v-close-popup />
+          <q-btn
+            icon="home"
+            flat
+            label="Go to menu"
+            @click="goToMenu()"
+            color="primary"
+            v-close-popup
+          />
+
+          <q-btn
+            icon="refresh"
+            flat
+            label="Restart game"
+            @click="startGame()"
+            color="primary"
+            v-close-popup
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -61,10 +77,28 @@
           <q-avatar icon="refresh" color="primary" text-color="white" />
           <span class="q-ml-sm">Game is won!!!</span>
         </q-card-section>
-        <q-card-section> Do you want to go to next level or restart this one? </q-card-section>
+        <q-card-section>
+          Do you want to go to next level, restart this one or stop current game?
+        </q-card-section>
         <q-card-actions align="right">
-          <q-btn flat label="Restart" @click="startGame()" color="primary" v-close-popup />
           <q-btn
+            icon="home"
+            flat
+            label="Go to menu"
+            @click="goToMenu()"
+            color="primary"
+            v-close-popup
+          />
+          <q-btn
+            icon="refresh"
+            flat
+            label="Restart"
+            @click="startGame()"
+            color="primary"
+            v-close-popup
+          />
+          <q-btn
+            icon="arrow_forward"
             v-show="columns < 7"
             flat
             label="Next level"
@@ -182,6 +216,11 @@ const nextLevel = () => {
     columns.value++
   }
   startGame()
+}
+
+const goToMenu = () => {
+  isStartShowned.value = true
+  isBoardShowned.value = false
 }
 
 const itemClicked = (id) => {
