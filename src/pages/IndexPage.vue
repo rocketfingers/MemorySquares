@@ -18,8 +18,12 @@
         class="fixed-width-btn"
       />
     </div>
-
-    <div v-show="isBoardShowned" class="mainDiv" :class="{ ['grid-container' + columns]: true }">
+    <ResultsBox />
+    <div
+      v-show="isBoardShowned"
+      class="mainDiv q-mt-xs"
+      :class="{ ['grid-container' + columns]: true }"
+    >
       <div
         v-ripple
         :class="{
@@ -82,6 +86,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import StatusBox from 'src/components/StatusBox.vue'
+import ResultsBox from 'src/components/ResultsBox.vue'
 import { useGameStatusStore } from 'src/stores/gameStatusStore'
 import { useTimer } from '../composables/timerComposable.js'
 import { gameResults } from 'src/gameResult.js'
