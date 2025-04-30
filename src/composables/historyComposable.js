@@ -48,6 +48,7 @@ export function useHistory() {
     if (currentUser) {
       // Return Firestore history for authorized users
       const q = query(collection(db, 'gamesHistory'), where('userId', '==', currentUser.uid))
+    
       return useCollection(q)
     } else {
       // Return localStorage history for unauthorized users
