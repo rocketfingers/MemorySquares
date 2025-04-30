@@ -1,7 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { getStorage } from 'firebase/storage'
 import { VueFire, VueFireAuth, VueFireFirestoreOptionsAPI } from 'vuefire'
 
 // Your web app's Firebase configuration
@@ -20,7 +19,6 @@ const firebaseApp = initializeApp(firebaseConfig)
 
 export const db = getFirestore(firebaseApp)
 export const auth = getAuth(firebaseApp)
-export const storage = getStorage(firebaseApp)
 export const provider = new GoogleAuthProvider()
 export function LoginProm() {
   return new Promise((resolve, reject) => {
