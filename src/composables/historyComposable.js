@@ -1,7 +1,7 @@
 import { useCollection } from 'vuefire'
 import { db } from 'src/boot/firebase'
 import { collection, addDoc, Timestamp, query, where } from 'firebase/firestore'
-import { useCurrentUser } from 'vuefire'
+import { getCurrentUser, useCurrentUser } from 'vuefire'
 import { ref } from 'vue'
 const localHistory = ref([])
 
@@ -17,7 +17,7 @@ export function useHistory() {
   }
 
   const addGameToHistoryAsync = async (round, time, totalGameTime, result) => {
-    let currentUser = useCurrentUser().value
+    const currentUser = await getCurrentUser()
 
     const isAuthorized = currentUser !== null
     if (isAuthorized) {
@@ -48,7 +48,7 @@ export function useHistory() {
     if (currentUser) {
       // Return Firestore history for authorized users
       const q = query(collection(db, 'gamesHistory'), where('userId', '==', currentUser.uid))
-    
+
       return useCollection(q)
     } else {
       // Return localStorage history for unauthorized users
