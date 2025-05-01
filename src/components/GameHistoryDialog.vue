@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <q-dialog v-model="dialogModel">
     <q-card style="min-width: 450px; max-width: 95vw">
       <q-card-section class="bg-accent text-white">
         <div class="text-h6">Game History</div>
@@ -28,13 +28,26 @@
         <q-btn flat label="Close" color="primary" v-close-popup />
       </q-card-actions>
     </q-card>
-  </div>
+  </q-dialog>
 </template>
 
 <script setup>
 import { useHistory } from 'src/composables/historyComposable'
 import { gameResults } from 'src/gameResult'
 import { computed, ref } from 'vue'
+
+const emit = defineEmits(['update:modelValue'])
+const props = defineProps({
+  modelValue: {
+    type: Boolean,
+    required: true,
+  },
+})
+
+const dialogModel = computed({
+  get: () => props.modelValue,
+  set: (value) => emit('update:modelValue', value),
+})
 
 const columns = [
   { name: 'round', label: 'Round', field: 'round', align: 'left' },
