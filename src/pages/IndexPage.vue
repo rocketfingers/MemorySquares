@@ -40,80 +40,15 @@
     </div>
     <StatusBox v-show="isBoardShowned" :solved="countOfValidClicked" :total="countOfValid" />
 
-    <q-dialog v-model="lostDialog" persistent>
-      <q-card>
-        <q-card-section>
-          <div class="text-h6">Game is lost</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          Unfortunately, you clicked wrong square. You can restart level or go to menu.
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn
-            icon="home"
-            flat
-            label="Go to menu"
-            @click="goToMenu()"
-            color="primary"
-            v-close-popup
-          />
-
-          <q-btn
-            icon="refresh"
-            flat
-            label="Restart game"
-            @click="startGame()"
-            color="primary"
-            v-close-popup
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-    <q-dialog v-model="wonDialog" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="refresh" color="primary" text-color="white" />
-          <span class="q-ml-sm">Game is won!!!</span>
-        </q-card-section>
-        <q-card-section>
-          Do you want to go to next level, restart this one or stop current game?
-        </q-card-section>
-        <q-card-actions align="right">
-          <q-btn
-            icon="home"
-            flat
-            label="Go to menu"
-            @click="goToMenu()"
-            color="primary"
-            v-close-popup
-          />
-          <q-btn
-            icon="refresh"
-            flat
-            label="Restart"
-            @click="startGame()"
-            color="primary"
-            v-close-popup
-          />
-          <q-btn
-            icon="arrow_forward"
-            v-show="columns < 7"
-            flat
-            label="Next level"
-            @click="nextLevel()"
-            color="primary"
-            v-close-popup
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-
-    <!-- Game History Dialog -->
-    <q-dialog v-if="showHistoryDialog" v-model="showHistoryDialog">
-      <GameHistoryDialog />
-    </q-dialog>
+    <GameLostDialog v-model="lostDialog" @go-to-menu="goToMenu" @restart="startGame" />
+    <GameWonDialog
+      v-model="wonDialog"
+      :columns="columns"
+      @go-to-menu="goToMenu"
+      @restart="startGame"
+      @next-level="nextLevel"
+    />
+    <GameHistoryDialog v-model="showHistoryDialog" />
   </q-page>
 </template>
 
@@ -124,7 +59,9 @@ import ResultsBox from 'src/components/ResultsBox.vue'
 import { useGameStatusStore } from 'src/stores/gameStatusStore'
 import { useTimer } from '../composables/timerComposable.js'
 import { gameResults } from 'src/gameResult.js'
-import GameHistoryDialog from 'src/components/GameHistoryDialog.vue' // <-- Add this import
+import GameHistoryDialog from 'src/components/GameHistoryDialog.vue'
+import GameWonDialog from 'src/components/GameWonDialog.vue'
+import GameLostDialog from 'src/components/GameLostDialog.vue'
 import { useQuasar } from 'quasar'
 
 const $q = useQuasar()
@@ -139,7 +76,7 @@ const lostDialog = ref(false)
 const wonDialog = ref(false)
 const isStartShowned = ref(true)
 const isBoardShowned = ref(false)
-const showHistoryDialog = ref(false) // <-- Add this ref
+const showHistoryDialog = ref(false)
 
 const columns = ref(3)
 
