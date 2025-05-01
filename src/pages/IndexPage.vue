@@ -125,6 +125,9 @@ import { useGameStatusStore } from 'src/stores/gameStatusStore'
 import { useTimer } from '../composables/timerComposable.js'
 import { gameResults } from 'src/gameResult.js'
 import GameHistoryDialog from 'src/components/GameHistoryDialog.vue' // <-- Add this import
+import { useQuasar } from 'quasar'
+
+const $q = useQuasar()
 
 // eslint-disable-next-line no-unused-vars
 const timer = useTimer()
@@ -139,6 +142,7 @@ const isBoardShowned = ref(false)
 const showHistoryDialog = ref(false) // <-- Add this ref
 
 const columns = ref(3)
+
 const countOfSquares = computed(() => {
   return columns.value * columns.value
 })
@@ -202,6 +206,13 @@ const boardResultsShowOrHide = (shown) => {
 }
 
 const startGame = () => {
+  // Set the initial number of columns based on the round
+  columns.value = 3
+  for (let i = 1; i <= gameStatusStore.round; i++) {
+    if (i % 3 === 1 && i !== 1) {
+      columns.value++
+    }
+  }
   isStartShowned.value = false
   isBoardShowned.value = true
   assignRectangles()
@@ -211,6 +222,7 @@ const startGame = () => {
     boardResultsShowOrHide(false)
   }, 2000)
 }
+
 const nextLevel = () => {
   if (gameStatusStore.round % 3 === 1 && gameStatusStore.round != 1) {
     columns.value++
@@ -246,6 +258,19 @@ const itemClicked = (id) => {
     console.log(error)
   }
 }
+
+const checkIfLastGameWasExited = () => {
+  // Initialize the game status store
+  if (gameStatusStore.gameInProgress) {
+    gameStatusStore.endGame(gameResults.LOSE)
+    $q.notify({
+      type: 'negative',
+      message: 'Your exit browser tab in the middle of game. It is count as lose.',
+    })
+  }
+}
+checkIfLastGameWasExited()
+// Set the initial number of columns based on the round
 
 defineOptions({
   name: 'IndexPage',

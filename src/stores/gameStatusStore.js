@@ -8,6 +8,7 @@ export const useGameStatusStore = defineStore('gameStatusStore', {
     currentGameTime: 0,
     totalGameTime: 0,
   }),
+  persist: true,
   actions: {
     updateGameTime() {
       this.currentGameTime++
