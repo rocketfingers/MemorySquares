@@ -40,22 +40,12 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-
-const emit = defineEmits(['go-to-menu', 'restart', 'next-level', 'update:modelValue'])
-const props = defineProps({
+defineEmits(['go-to-menu', 'restart', 'next-level'])
+defineProps({
   columns: {
     type: Number,
     required: true,
   },
-  modelValue: {
-    type: Boolean,
-    required: true,
-  },
 })
-
-const dialogModel = computed({
-  get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
-})
+const dialogModel = defineModel()
 </script>
