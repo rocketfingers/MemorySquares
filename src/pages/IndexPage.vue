@@ -6,7 +6,7 @@
         icon="sports_score"
         label="Start"
         v-show="isStartShowned"
-        @click="startGame()"
+        @click="preStart()"
         class="fixed-width-btn"
       />
       <q-btn
@@ -139,6 +139,35 @@ const boardResultsShowOrHide = (shown) => {
   if (shown === false) {
     itemsNotClickable.value = false
     gameStatusStore.startGame()
+  }
+}
+
+const preStart = () => {
+  const lvl = gameStatusStore.round
+  if (lvl > 1) {
+    $q.dialog({
+      title: 'Confirm',
+      message: `Your previous game is not finished. Do you want to continue from round ${lvl} or restart from round 1?`,
+      persistent: true,
+      ok: {
+        label: 'Continue',
+        flat: true,
+      },
+      cancel: {
+        label: 'Restart',
+        flat: true,
+      },
+    })
+      .onOk(() => {
+        startGame()
+      })
+      .onCancel(() => {
+        gameStatusStore.$reset()
+        startGame()
+      })
+      .onDismiss(() => {
+        return
+      })
   }
 }
 
