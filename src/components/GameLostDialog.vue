@@ -33,20 +33,8 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-
-const emit = defineEmits(['go-to-menu', 'restart', 'update:modelValue'])
-const props = defineProps({
-  modelValue: {
-    type: Boolean,
-    required: true,
-  },
-})
-
-const dialogModel = computed({
-  get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
-})
+const dialogModel = defineModel()
+defineEmits(['go-to-menu', 'restart'])
 
 defineOptions({
   name: 'GameLostDialog',

@@ -36,18 +36,7 @@ import { useHistory } from 'src/composables/historyComposable'
 import { gameResults } from 'src/gameResult'
 import { computed, ref } from 'vue'
 
-const emit = defineEmits(['update:modelValue'])
-const props = defineProps({
-  modelValue: {
-    type: Boolean,
-    required: true,
-  },
-})
-
-const dialogModel = computed({
-  get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
-})
+const dialogModel = defineModel()
 
 const columns = [
   { name: 'round', label: 'Round', field: 'round', align: 'left' },
