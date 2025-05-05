@@ -144,7 +144,9 @@ const boardResultsShowOrHide = (shown) => {
 
 const preStart = () => {
   const lvl = gameStatusStore.round
-  if (lvl > 1) {
+  if (lvl === 1) {
+    startGame()
+  } else {
     $q.dialog({
       title: 'Confirm',
       message: `Your previous game is not finished. Do you want to continue from round ${lvl} or restart from round 1?`,
