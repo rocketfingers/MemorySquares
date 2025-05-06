@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { useHistory } from 'src/composables/historyComposable'
+
 export const useGameStatusStore = defineStore('gameStatusStore', {
   state: () => ({
     round: 1,
@@ -7,6 +8,7 @@ export const useGameStatusStore = defineStore('gameStatusStore', {
     gameInProgress: false,
     currentGameTime: 0,
     totalGameTime: 0,
+    isBoardShowned: false,
   }),
   persist: true,
   actions: {

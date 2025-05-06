@@ -14,8 +14,10 @@
           </q-avatar>
           <span>{{ user.displayName }}</span>
         </div>
-        <q-btn v-if="!user" @click="login" flat round dense icon="login" />
-        <q-btn v-if="user" @click="logout" flat round dense icon="logout" />
+        <div v-show="!gameStatusStore.isBoardShowned">
+          <q-btn v-if="!user" @click="login" flat round dense icon="login" />
+          <q-btn v-if="user" @click="logout" flat round dense icon="logout" />
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -28,17 +30,20 @@
 <script setup>
 import { ref } from 'vue'
 import { auth, LoginProm } from '../boot/firebase'
-
+import { useGameStatusStore } from 'src/stores/gameStatusStore'
 import { useCurrentUser } from 'vuefire'
 let user = useCurrentUser()
+const gameStatusStore = useGameStatusStore()
 
 const login = async () => {
   await LoginProm()
+  useGameStatusStore().$reset
   user = useCurrentUser()
 }
 
 const logout = async () => {
   await auth.signOut()
+  useGameStatusStore().$reset
   user = useCurrentUser()
 }
 
