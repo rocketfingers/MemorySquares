@@ -16,19 +16,19 @@
 </template>
 
 <script setup>
-import { ref } from 'firebase/storage'
 import { storeToRefs } from 'pinia'
 import { useHistory } from 'src/composables/historyComposable'
 import { gameResults } from 'src/gameResult'
 import { useGameStatusStore } from 'src/stores/gameStatusStore'
 import { computed } from 'vue'
-let history = ref([])
 
-history = useHistory().getGameHistory()
+const historyComposable = useHistory()
+historyComposable.subscribe()
+let history = historyComposable.history
 
 const maxRound = computed(() => {
   try {
-    let roundsList = history.value.map((p) => p.round)
+    let roundsList = history.map((p) => p.round)
     return Math.max(...roundsList)
   } catch (error) {
     console.log('computed maxRound' + error)
@@ -38,7 +38,7 @@ const maxRound = computed(() => {
 
 const avgTime = computed(() => {
   try {
-    let roundsList = history.value.map((p) => p.time)
+    let roundsList = history.map((p) => p.time)
     if (roundsList.length === 0) return 0 // Handle empty array case
     const sum = roundsList.reduce((acc, val) => acc + val, 0)
     return (sum / roundsList.length).toFixed(1)
@@ -50,7 +50,7 @@ const avgTime = computed(() => {
 
 const getCountByResult = (result) => {
   try {
-    return history.value.filter((p) => p.result === result).length
+    return history.filter((p) => p.result === result).length
   } catch (error) {
     console.log('computed count' + error)
     return 0

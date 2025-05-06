@@ -18,9 +18,9 @@
         class="fixed-width-btn"
       />
     </div>
-    <ResultsBox v-show="isBoardShowned" />
+    <ResultsBox v-show="gameStatusStore.isBoardShowned" />
     <div
-      v-show="isBoardShowned"
+      v-show="gameStatusStore.isBoardShowned"
       class="mainDiv q-mt-xs"
       :class="{ ['grid-container' + columns]: true }"
     >
@@ -38,7 +38,11 @@
         v-for="item in rectangles"
       ></div>
     </div>
-    <StatusBox v-show="isBoardShowned" :solved="countOfValidClicked" :total="countOfValid" />
+    <StatusBox
+      v-show="gameStatusStore.isBoardShowned"
+      :solved="countOfValidClicked"
+      :total="countOfValid"
+    />
 
     <GameLostDialog v-model="lostDialog" @go-to-menu="goToMenu" @restart="startGame" />
     <GameWonDialog
@@ -75,7 +79,6 @@ const gameStatusStore = useGameStatusStore()
 const lostDialog = ref(false)
 const wonDialog = ref(false)
 const isStartShowned = ref(true)
-const isBoardShowned = ref(false)
 const showHistoryDialog = ref(false)
 
 const columns = ref(3)
@@ -182,7 +185,7 @@ const startGame = () => {
     }
   }
   isStartShowned.value = false
-  isBoardShowned.value = true
+  useGameStatusStore().isBoardShowned = true
   assignRectangles()
   boardResultsShowOrHide(true)
   itemsNotClickable.value = true
@@ -200,7 +203,7 @@ const nextLevel = () => {
 
 const goToMenu = () => {
   isStartShowned.value = true
-  isBoardShowned.value = false
+  useGameStatusStore().isBoardShowned = false
 }
 
 const itemClicked = (id) => {
@@ -228,6 +231,8 @@ const itemClicked = (id) => {
 }
 
 const checkIfLastGameWasExited = () => {
+  gameStatusStore.isBoardShowned = false
+
   // Initialize the game status store
   if (gameStatusStore.gameInProgress) {
     gameStatusStore.endGame(gameResults.LOSE)
