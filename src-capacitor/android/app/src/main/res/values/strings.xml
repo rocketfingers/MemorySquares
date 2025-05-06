@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Memory Squares</string>
+    <string name="title_activity_main">Memory Squares</string>
+    <string name="package_name">org.memorysquares.msi.app</string>
+    <string name="custom_url_scheme">org.memorysquares.msi.app</string>
+</resources>
