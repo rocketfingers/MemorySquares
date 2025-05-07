@@ -22,7 +22,7 @@
     <div
       v-show="gameStatusStore.isBoardShowned"
       class="mainDiv q-mt-xs"
-      :class="{ ['grid-container' + columns]: true }"
+      :class="{ ['grid-container' + columns]: true ,'cursorNotAllowed': itemsNotClickable }"
     >
       <div
         v-ripple
@@ -250,6 +250,10 @@ defineOptions({
 })
 </script>
 <style scoped>
+.cursorNotAllowed {
+  cursor: not-allowed;
+}
+
 .mainDiv {
   background-color: #ecc483;
   width: 90vmin;
