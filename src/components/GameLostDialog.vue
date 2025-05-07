@@ -2,11 +2,17 @@
   <q-dialog v-model="dialogModel" persistent>
     <q-card>
       <q-card-section>
-        <div class="text-h6">Game is lost</div>
+        <div class="row">
+          <div class="text-h6">Game is lost</div>
+          <q-icon size="xl" name="heart_broken" color="negative" />
+        </div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        Unfortunately, you clicked wrong square. You can restart level or go to menu.
+        <div v-if="props.reason === typeOfLost.WRONG_CLICKED">
+          Unfortunately, you clicked wrong square. You can restart level or go to menu.
+        </div>
+        <div v-if="props.reason === typeOfLost.TIME_OUT">Unfortunately, you run out of time.</div>
       </q-card-section>
 
       <q-card-actions align="right">
@@ -33,6 +39,14 @@
 </template>
 
 <script setup>
+import { typeOfLost } from 'src/gameConstants'
+
+const props = defineProps({
+  reason: {
+    type: Number,
+    default: typeOfLost.WRONG_CLICKED,
+  },
+})
 const dialogModel = defineModel()
 defineEmits(['go-to-menu', 'restart'])
 

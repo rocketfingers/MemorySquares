@@ -22,7 +22,7 @@
     <div
       v-show="gameStatusStore.isBoardShowned"
       class="mainDiv q-mt-xs"
-      :class="{ ['grid-container' + columns]: true ,'cursorNotAllowed': itemsNotClickable }"
+      :class="{ ['grid-container' + columns]: true, cursorNotAllowed: itemsNotClickable }"
     >
       <div
         v-ripple
@@ -57,7 +57,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import StatusBox from 'src/components/StatusBox.vue'
 import ResultsBox from 'src/components/ResultsBox.vue'
 import { useGameStatusStore } from 'src/stores/gameStatusStore'
@@ -67,6 +67,7 @@ import GameHistoryDialog from 'src/components/GameHistoryDialog.vue'
 import GameWonDialog from 'src/components/GameWonDialog.vue'
 import GameLostDialog from 'src/components/GameLostDialog.vue'
 import { useQuasar } from 'quasar'
+import { timeConstants, typeOfLost } from 'src/gameConstants.js'
 
 const $q = useQuasar()
 
@@ -177,6 +178,8 @@ const preStart = () => {
 }
 
 const startGame = () => {
+  typeLost.value = null
+
   // Set the initial number of columns based on the round
   columns.value = 3
   for (let i = 1; i <= gameStatusStore.round; i++) {
@@ -195,6 +198,8 @@ const startGame = () => {
 }
 
 const nextLevel = () => {
+  gameStatusStore.round++
+
   if (gameStatusStore.round % 3 === 1 && gameStatusStore.round != 1) {
     columns.value++
   }
@@ -216,19 +221,32 @@ const itemClicked = (id) => {
 
     if (isGameLost.value) {
       gameStatusStore.endGame(gameResults.LOSE)
+      typeLost.value = typeOfLost.WRONG_CLICKED
       lostDialog.value = true
       return
     }
     console.log('Item' + id + ' is clicked')
     if (isGameWon.value) {
       gameStatusStore.endGame(gameResults.WIN)
-      gameStatusStore.round++
       wonDialog.value = true
     }
   } catch (error) {
     console.log(error)
   }
 }
+const typeLost = ref(null)
+watchEffect(() => {
+  let time = gameStatusStore.currentGameTime
+  if (
+    time === timeConstants.MAX_ALLOWED_TIME &&
+    gameStatusStore.isBoardShowned &&
+    gameStatusStore.gameInProgress
+  ) {
+    gameStatusStore.endGame(gameResults.LOSE)
+    typeLost.value = typeOfLost.TIME_OUT
+    lostDialog.value = true
+  }
+})
 
 const checkIfLastGameWasExited = () => {
   gameStatusStore.isBoardShowned = false

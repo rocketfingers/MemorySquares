@@ -16,7 +16,12 @@
       {{ percentageSolved }}%
     </q-circular-progress>
     <div>
-      <q-chip color="accent" text-color="white" icon="alarm" :label="'Game: ' + currentGameTime" />
+      <q-chip
+        color="accent"
+        text-color="white"
+        icon="alarm"
+        :label="'Game:' + currentGameTime + '/' + timeConstants.MAX_ALLOWED_TIME"
+      />
     </div>
 
     <div>
@@ -34,6 +39,7 @@
 import { storeToRefs } from 'pinia'
 import { useGameStatusStore } from 'src/stores/gameStatusStore'
 import { computed } from 'vue'
+import { timeConstants } from 'src/gameConstants'
 
 const gameStatusStore = useGameStatusStore()
 const { anyGameEverStarted, currentGameTime } = storeToRefs(gameStatusStore)

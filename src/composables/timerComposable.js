@@ -1,5 +1,6 @@
 import { onMounted, onBeforeUnmount } from 'vue'
 import { useGameStatusStore } from '../stores/gameStatusStore.js'
+import { timeConstants } from 'src/gameConstants.js'
 
 // by convention, composable function names start with "use"
 export function useTimer() {
@@ -8,7 +9,11 @@ export function useTimer() {
   const gameStatusStore = useGameStatusStore()
 
   const updateTime = () => {
-    if (!document.hidden && gameStatusStore.gameInProgress) {
+    if (
+      !document.hidden &&
+      gameStatusStore.gameInProgress &&
+      gameStatusStore.currentGameTime <= timeConstants.MAX_ALLOWED_TIME
+    ) {
       gameStatusStore.updateGameTime()
     }
   }
