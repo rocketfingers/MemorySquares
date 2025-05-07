@@ -2,8 +2,8 @@
   <q-dialog v-model="dialogModel" persistent>
     <q-card>
       <q-card-section class="row items-center">
-        <q-avatar icon="refresh" color="primary" text-color="white" />
         <span class="q-ml-sm">Game is won!!!</span>
+        <q-icon size="xl" name="sentiment_very_satisfied" color="positive" />
       </q-card-section>
       <q-card-section>
         Do you want to go to next level, restart this one or stop current game?
