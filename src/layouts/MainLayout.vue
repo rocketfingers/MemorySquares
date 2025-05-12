@@ -9,14 +9,69 @@
           {{ title }}
         </q-toolbar-title>
         <div v-if="user" class="row items-center q-mr-md">
-          <q-avatar size="md" class="q-mr-sm">
-            <img :src="user.photoURL" />
-          </q-avatar>
-          <span>{{ user.displayName }}</span>
+          <q-btn flat round class="q-mr-sm">
+            <q-avatar size="md" class="q-mr-sm">
+              <img :src="user.photoURL" />
+            </q-avatar>
+            <q-menu>
+              <div class="row no-wrap q-pa-md">
+                <div class="column">
+                  <div class="text-h6 q-mb-md">Settings</div>
+                  <q-toggle
+                    size="lg"
+                    checked-icon="light_mode"
+                    color="accent"
+                    unchecked-icon="dark_mode"
+                    false-value="Light"
+                    true-value="Dark"
+                    v-model="theme"
+                    label="Theme:"
+                    left-label
+                  />
+                </div>
+
+                <q-separator vertical inset class="q-mx-lg" />
+
+                <div class="column items-center">
+                  <q-avatar size="72px">
+                    <img :src="user.photoURL" />
+                  </q-avatar>
+
+                  <div class="text-subtitle1 no-wrap q-mt-md q-mb-xs">{{ user.displayName }}</div>
+
+                  <q-btn
+                    :disable="gameStatusStore.isBoardShowned"
+                    color="primary"
+                    label="Logout"
+                    @click="logout"
+                    push
+                    size="sm"
+                    v-close-popup
+                  >
+                    <q-tooltip v-if="gameStatusStore.isBoardShowned">
+                      You cannot logout during the game.
+                    </q-tooltip>
+                  </q-btn>
+                </div>
+              </div>
+            </q-menu>
+          </q-btn>
         </div>
         <div v-show="!gameStatusStore.isBoardShowned">
-          <q-btn v-if="!user" @click="login" flat round dense icon="login" />
-          <q-btn v-if="user" @click="logout" flat round dense icon="logout" />
+          <q-toggle
+            size="lg"
+            v-if="!user"
+            checked-icon="light_mode"
+            color="accent"
+            unchecked-icon="dark_mode"
+            class="q-mr-md"
+            false-value="Light"
+            true-value="Dark"
+            v-model="theme"
+            label="Theme:"
+            left-label
+          />
+          <q-btn v-if="!user" color="accent" @click="login" label="Login" icon="login" />
         </div>
       </q-toolbar>
     </q-header>
@@ -28,12 +83,65 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
+import { useQuasar } from 'quasar'
 import { auth, LoginProm } from '../boot/firebase'
 import { useGameStatusStore } from 'src/stores/gameStatusStore'
-import { useCurrentUser } from 'vuefire'
+import { useSettingStore } from 'src/stores/settingStore'
+import { getCurrentUser, useCurrentUser } from 'vuefire'
+import { storeToRefs } from 'pinia'
 let user = useCurrentUser()
+const settingStore = useSettingStore()
+const { dontShowLoginPromptAgain, theme } = storeToRefs(settingStore)
 const gameStatusStore = useGameStatusStore()
+const $q = useQuasar()
+
+watch(
+  theme,
+  (newTheme) => {
+    if (newTheme === 'Dark') {
+      $q.dark.set(true)
+    } else {
+      $q.dark.set(false)
+    }
+  },
+  {
+    // immediate: true,
+    deep: true,
+  },
+)
+
+const askToLogin = () => {
+  $q.notify({
+    progress: true,
+    message: 'Please login to store your progress on multiple devices',
+    icon: 'arrow_forward',
+    position: 'top',
+    color: 'accent',
+    multiLine: true,
+    avatar: 'https://cdn.quasar.dev/img/boy-avatar.png',
+    actions: [
+      {
+        label: "Don't show again",
+        color: 'yellow',
+        handler: () => {
+          dontShowLoginPromptAgain.value = true
+        },
+      },
+    ],
+  })
+}
+onMounted(async () => {
+  if (theme.value === 'Dark') {
+    $q.dark.set(true)
+  } else {
+    $q.dark.set(false)
+  }
+  const currentUser = await getCurrentUser()
+  if (!currentUser && !dontShowLoginPromptAgain.value) {
+    askToLogin()
+  }
+})
 
 const login = async () => {
   await LoginProm()
@@ -42,9 +150,16 @@ const login = async () => {
 }
 
 const logout = async () => {
-  await auth.signOut()
-  useGameStatusStore().$reset
-  user = useCurrentUser()
+  $q.dialog({
+    title: 'Logout',
+    message: 'Are you sure you want to logout?',
+    cancel: true,
+    persistent: true,
+  }).onOk(async () => {
+    await auth.signOut()
+    useGameStatusStore().$reset
+    user = useCurrentUser()
+  })
 }
 
 const title = ref('Memory Squares')
