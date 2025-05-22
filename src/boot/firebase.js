@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { VueFire, VueFireAuth, VueFireFirestoreOptionsAPI } from 'vuefire'
+import { getCurrentUser, VueFire, VueFireAuth, VueFireFirestoreOptionsAPI } from 'vuefire'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -26,6 +26,25 @@ export function LoginProm() {
       .then((result) => {
         const user = result.user
         resolve(user)
+      })
+      .catch((error) => {
+        reject(error)
+      })
+  })
+}
+
+export function deleteAcount() {
+  return new Promise((resolve, reject) => {
+    getCurrentUser()
+      .then((result) => {
+        result
+          .delete()
+          .then(() => {
+            resolve('Account deleted successfully')
+          })
+          .catch((error) => {
+            reject(error)
+          })
       })
       .catch((error) => {
         reject(error)

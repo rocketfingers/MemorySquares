@@ -52,6 +52,21 @@
                       You cannot logout during the game.
                     </q-tooltip>
                   </q-btn>
+
+                  <q-btn
+                    :disable="gameStatusStore.isBoardShowned"
+                    color="negative"
+                    label="Delete Account"
+                    @click="deleteAccount"
+                    push
+                    class="q-mt-sm"
+                    size="sm"
+                    v-close-popup
+                  >
+                    <q-tooltip v-if="gameStatusStore.isBoardShowned">
+                      You cannot delete account during the game.
+                    </q-tooltip>
+                  </q-btn>
                 </div>
               </div>
             </q-menu>
@@ -85,7 +100,7 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue'
 import { useQuasar } from 'quasar'
-import { auth, LoginProm } from '../boot/firebase'
+import { auth, LoginProm, deleteAcount } from '../boot/firebase'
 import { useGameStatusStore } from 'src/stores/gameStatusStore'
 import { useSettingStore } from 'src/stores/settingStore'
 import { getCurrentUser, useCurrentUser } from 'vuefire'
@@ -143,6 +158,31 @@ onMounted(async () => {
   }
 })
 
+const deleteAccount = async () => {
+  $q.dialog({
+    title: 'Delete Account',
+    message: 'Are you sure you want to delete your account?',
+    cancel: true,
+    persistent: true,
+  }).onOk(async () => {
+    await deleteAcount()
+      .then(() => {
+        $q.notify({
+          message: 'Account deleted successfully',
+          color: 'green',
+          icon: 'check_circle',
+        })
+      })
+      .catch((error) => {
+        $q.notify({
+          message: 'Error deleting account: ' + error.message,
+          color: 'red',
+          icon: 'error',
+        })
+      })
+  })
+}
+
 const login = async () => {
   await LoginProm()
   useGameStatusStore().$reset
@@ -159,6 +199,11 @@ const logout = async () => {
     await auth.signOut()
     useGameStatusStore().$reset
     user = useCurrentUser()
+    $q.notify({
+      message: 'Logged out successfully',
+      color: 'green',
+      icon: 'check_circle',
+    })
   })
 }
 
