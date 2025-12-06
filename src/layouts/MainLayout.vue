@@ -185,7 +185,7 @@ const deleteAccount = async () => {
 
 const login = async () => {
   await LoginProm()
-  useGameStatusStore().$reset
+  useGameStatusStore().$reset()
   user = useCurrentUser()
 }
 
@@ -197,7 +197,7 @@ const logout = async () => {
     persistent: true,
   }).onOk(async () => {
     await auth.signOut()
-    useGameStatusStore().$reset
+    useGameStatusStore().$reset()
     user = useCurrentUser()
     $q.notify({
       message: 'Logged out successfully',
