@@ -100,7 +100,7 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue'
 import { useQuasar } from 'quasar'
-import { auth, LoginProm, deleteAcount } from '../boot/firebase'
+import { auth, LoginProm, deleteAccountAfterWarning } from '../boot/firebase'
 import { useGameStatusStore } from 'src/stores/gameStatusStore'
 import { useSettingStore } from 'src/stores/settingStore'
 import { getCurrentUser, useCurrentUser } from 'vuefire'
@@ -165,7 +165,7 @@ const deleteAccount = async () => {
     cancel: true,
     persistent: true,
   }).onOk(async () => {
-    await deleteAcount()
+    await deleteAccountAfterWarning()
       .then(() => {
         $q.notify({
           message: 'Account deleted successfully',

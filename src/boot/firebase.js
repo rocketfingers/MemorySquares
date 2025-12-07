@@ -33,7 +33,7 @@ export function LoginProm() {
   })
 }
 
-export function deleteAcount() {
+export function deleteAccountAfterWarning() {
   return new Promise((resolve, reject) => {
     getCurrentUser()
       .then((result) => {

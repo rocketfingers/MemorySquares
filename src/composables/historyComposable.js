@@ -109,10 +109,10 @@ export function useHistory() {
         deleteDoc(doc.ref)
       })
     }
-    {
-      localHistory = []
-      history = []
-    }
+
+    localHistory = []
+
+    history = []
   }
 
   return {

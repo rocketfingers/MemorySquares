@@ -72,7 +72,7 @@ import { timeConstants, typeOfLost } from 'src/gameConstants.js'
 const $q = useQuasar()
 
 // eslint-disable-next-line no-unused-vars
-const timer = useTimer()
+const _timer = useTimer() // Side effect: starts the timer
 
 const gameStatusStore = useGameStatusStore()
 
@@ -176,14 +176,16 @@ const preStart = () => {
       })
   }
 }
-
+const shouldAddColumns = (round) => {
+  return round % 3 === 1 && round != 1 && round < 13
+}
 const startGame = () => {
   typeLost.value = null
 
   // Set the initial number of columns based on the round
   columns.value = 3
   for (let i = 1; i <= gameStatusStore.round; i++) {
-    if (i % 3 === 1 && i !== 1) {
+    if (shouldAddColumns(i)) {
       columns.value++
     }
   }
@@ -200,7 +202,7 @@ const startGame = () => {
 const nextLevel = () => {
   gameStatusStore.round++
 
-  if (gameStatusStore.round % 3 === 1 && gameStatusStore.round != 1) {
+  if (shouldAddColumns(gameStatusStore.round)) {
     columns.value++
   }
   startGame()
@@ -231,7 +233,11 @@ const itemClicked = (id) => {
       wonDialog.value = true
     }
   } catch (error) {
-    console.log(error)
+    $q.notify({
+      type: 'negative',
+      message: 'An error occurred. Please refresh the page.',
+    })
+    console.error('Game error:', error)
   }
 }
 const typeLost = ref(null)
@@ -256,7 +262,7 @@ const checkIfLastGameWasExited = () => {
     gameStatusStore.endGame(gameResults.LOSE)
     $q.notify({
       type: 'negative',
-      message: 'Your exit browser tab in the middle of game. It is count as lose.',
+      message: 'You exited the browser tab in the middle of a game. It has been counted as a loss.',
     })
   }
 }
