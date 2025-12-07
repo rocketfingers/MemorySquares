@@ -14,6 +14,8 @@ import { reactive } from 'vue'
 
 let localHistory = reactive([])
 let history = reactive([])
+let unsubscribe = null
+
 export function useHistory() {
   try {
     const stored = localStorage.getItem('gameHistory')
@@ -74,15 +76,16 @@ export function useHistory() {
     }
 
     auth.onAuthStateChanged((user) => {
+      if (unsubscribe) unsubscribe()
       if (user) {
-        onSnapshot(
+        unsubscribe = onSnapshot(
           query(collection(db, 'gamesHistory'), where('userId', '==', user.uid)),
           (snapshot) => {
             history.splice(0, history.length) // Clear the history array
             snapshot.docs.forEach((doc) => {
-              history.push(doc.data()) // Store unsubscribe function if needed for cleanup
+              history.push(doc.data())
             })
-          }, // Store unsubscribe function if needed for cleanup
+          },
         )
       } else {
         history.splice(0, history.length) // Clear the history array
