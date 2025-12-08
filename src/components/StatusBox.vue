@@ -9,7 +9,12 @@
         <q-icon name="alarm" size="24px" color="white" />
         <div class="time-content">
           <div class="time-label">Round Time</div>
-          <div class="time-value">{{ currentGameTime }}/{{ timeConstants.MAX_ALLOWED_TIME }}s</div>
+          <div class="time-value">
+            <div :class="{ 'text-red': timeColorShouldBeRed }">
+              {{ currentGameTime }}
+            </div>
+            /{{ timeConstants.MAX_ALLOWED_TIME }}s
+          </div>
         </div>
       </div>
 
@@ -58,6 +63,10 @@ const gameStatusStore = useGameStatusStore()
 const { anyGameEverStarted, currentGameTime } = storeToRefs(gameStatusStore)
 
 const props = defineProps({ solved: Number, total: Number })
+
+const timeColorShouldBeRed = computed(() => {
+  return currentGameTime.value >= timeConstants.MAX_ALLOWED_TIME * 0.8
+})
 
 const percentageSolved = computed(() => {
   try {
@@ -195,6 +204,10 @@ const percentageSolved = computed(() => {
   font-size: 1.25rem;
   font-weight: 700;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 @keyframes fadeInLeft {
