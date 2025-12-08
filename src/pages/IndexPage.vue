@@ -57,11 +57,12 @@
 </template>
 
 <script setup>
-import { computed, ref, watchEffect } from 'vue'
+import { ref, watchEffect } from 'vue'
 import StatusBox from 'src/components/StatusBox.vue'
 import ResultsBox from 'src/components/ResultsBox.vue'
 import { useGameStatusStore } from 'src/stores/gameStatusStore'
-import { useTimer } from '../composables/timerComposable.js'
+import { useTimer } from 'src/composables/timerComposable.js'
+import { useGameBoard } from 'src/composables/useGameBoard.js'
 import { gameResults } from 'src/gameResult.js'
 import GameHistoryDialog from 'src/components/GameHistoryDialog.vue'
 import GameWonDialog from 'src/components/GameWonDialog.vue'
@@ -72,79 +73,19 @@ import { timeConstants, typeOfLost } from 'src/gameConstants.js'
 const $q = useQuasar()
 
 // eslint-disable-next-line no-unused-vars
-const _timer = useTimer() // Side effect: starts the timer
+const _timer = useTimer()
 
 const gameStatusStore = useGameStatusStore()
 
-// dialogs
+// Initialize game board composable
+const gameBoard = useGameBoard(gameStatusStore)
+const { columns, rectangles, itemsNotClickable, countOfValidClicked, countOfValid } = gameBoard
+
+// Dialog state
 const lostDialog = ref(false)
 const wonDialog = ref(false)
 const isStartShowned = ref(true)
 const showHistoryDialog = ref(false)
-
-const columns = ref(3)
-
-const countOfSquares = computed(() => {
-  return columns.value * columns.value
-})
-const rectangles = ref([])
-const countOfValidClicked = computed(() => {
-  return rectangles.value.filter((p) => p.isClicked === true && p.isValid === true).length
-})
-const countOfValid = computed(() => {
-  return rectangles.value.filter((p) => p.isValid === true).length
-})
-const isGameWon = computed(() => {
-  return rectangles.value.filter((p) => p.isClicked === false && p.isValid === true).length === 0
-})
-const isGameLost = computed(() => {
-  return rectangles.value.some((p) => p.isClicked === true && p.isValid === false)
-})
-const itemsNotClickable = ref(true)
-
-const assignRectangles = () => {
-  rectangles.value = []
-
-  let lvlAdjustemend = gameStatusStore.round % 3 === 0 ? 3 : gameStatusStore.round % 3
-
-  // Create initial rectangles
-  for (let i = 0; i < countOfSquares.value; i++) {
-    rectangles.value.push({
-      id: i,
-      isValid: Math.random() < 0.15 + 0.15 * lvlAdjustemend,
-      isClicked: false,
-    })
-  }
-
-  // Count valid rectangles
-  let validCount = rectangles.value.filter((p) => p.isValid).length
-
-  // Ensure minimum 2 valid rectangles
-  while (validCount < 2) {
-    const nonValidSquares = rectangles.value.filter((p) => !p.isValid)
-    const randomSquare = nonValidSquares[Math.floor(Math.random() * nonValidSquares.length)]
-    randomSquare.isValid = true
-    validCount++
-  }
-
-  // Ensure minimum 2 invalid rectangles
-  while (validCount > countOfSquares.value - 2) {
-    const validSquares = rectangles.value.filter((p) => p.isValid)
-    const randomSquare = validSquares[Math.floor(Math.random() * validSquares.length)]
-    randomSquare.isValid = false
-    validCount--
-  }
-}
-
-const boardResultsShowOrHide = (shown) => {
-  rectangles.value.forEach(function (p) {
-    p.isClicked = shown
-  })
-  if (shown === false) {
-    itemsNotClickable.value = false
-    gameStatusStore.startGame()
-  }
-}
 
 const preStart = () => {
   const lvl = gameStatusStore.round
@@ -176,33 +117,25 @@ const preStart = () => {
       })
   }
 }
-const shouldAddColumns = (round) => {
-  return round % 3 === 1 && round != 1 && round < 13
-}
+
 const startGame = () => {
   typeLost.value = null
 
-  // Set the initial number of columns based on the round
-  columns.value = 3
-  for (let i = 1; i <= gameStatusStore.round; i++) {
-    if (shouldAddColumns(i)) {
-      columns.value++
-    }
-  }
+  columns.value = gameBoard.calculateColumns(gameStatusStore.round)
   isStartShowned.value = false
-  useGameStatusStore().isBoardShowned = true
-  assignRectangles()
-  boardResultsShowOrHide(true)
+  gameStatusStore.isBoardShowned = true
+  gameBoard.assignRectangles()
+  gameBoard.boardResultsShowOrHide(true)
   itemsNotClickable.value = true
   window.setTimeout(() => {
-    boardResultsShowOrHide(false)
-  }, 2000)
+    gameBoard.boardResultsShowOrHide(false)
+  }, timeConstants.PREVIEW_DURATION)
 }
 
 const nextLevel = () => {
   gameStatusStore.round++
 
-  if (shouldAddColumns(gameStatusStore.round)) {
+  if (gameBoard.shouldAddColumns(gameStatusStore.round)) {
     columns.value++
   }
   startGame()
@@ -210,25 +143,25 @@ const nextLevel = () => {
 
 const goToMenu = () => {
   isStartShowned.value = true
-  useGameStatusStore().isBoardShowned = false
+  gameStatusStore.isBoardShowned = false
 }
 
 const itemClicked = (id) => {
   try {
-    if (itemsNotClickable.value) {
+    const result = gameBoard.handleItemClick(id)
+
+    if (!result) {
       return
     }
-    const item = rectangles.value.filter((p) => p.id === id)[0]
-    item.isClicked = true
 
-    if (isGameLost.value) {
+    if (result.lost) {
       gameStatusStore.endGame(gameResults.LOSE)
       typeLost.value = typeOfLost.WRONG_CLICKED
       lostDialog.value = true
       return
     }
-    console.log('Item' + id + ' is clicked')
-    if (isGameWon.value) {
+
+    if (result.won) {
       gameStatusStore.endGame(gameResults.WIN)
       wonDialog.value = true
     }
