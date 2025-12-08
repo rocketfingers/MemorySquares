@@ -4,37 +4,36 @@
       <q-icon name="sports_score" size="24px" color="white" />
       <h3 class="status-title">Current Game</h3>
     </div>
-
-    <div class="round-display">
-      <q-icon name="casino" size="36px" color="white" />
-      <div class="round-content">
-        <div class="round-label">Round</div>
-        <div class="round-value">{{ gameStatusStore.round }}</div>
-      </div>
-    </div>
-
-    <div class="progress-section">
-      <q-circular-progress
-        show-value
-        font-size="14px"
-        :value="percentageSolved"
-        size="80px"
-        :thickness="0.15"
-        color="white"
-        track-color="rgba(255, 255, 255, 0.2)"
-        class="progress-circle"
-      >
-        <div class="progress-text">{{ percentageSolved }}%</div>
-      </q-circular-progress>
-      <div class="progress-label">Progress</div>
-    </div>
-
     <div class="time-stats">
       <div class="time-item">
         <q-icon name="alarm" size="24px" color="white" />
         <div class="time-content">
           <div class="time-label">Round Time</div>
           <div class="time-value">{{ currentGameTime }}/{{ timeConstants.MAX_ALLOWED_TIME }}s</div>
+        </div>
+      </div>
+
+      <div class="progress-section">
+        <q-circular-progress
+          show-value
+          font-size="14px"
+          :value="percentageSolved"
+          size="80px"
+          :thickness="0.15"
+          color="white"
+          track-color="rgba(255, 255, 255, 0.2)"
+          class="progress-circle"
+        >
+          <div class="progress-text">{{ percentageSolved }}%</div>
+        </q-circular-progress>
+        <div class="progress-label">Progress</div>
+      </div>
+
+      <div class="round-display">
+        <q-icon name="casino" size="36px" color="white" />
+        <div class="round-content">
+          <div class="round-label">Round</div>
+          <div class="round-value">{{ gameStatusStore.round }}</div>
         </div>
       </div>
 
@@ -103,8 +102,7 @@ const percentageSolved = computed(() => {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1.25rem;
-  margin-bottom: 1.5rem;
+  padding: 0.75rem;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
   border-radius: 16px;
 }
@@ -136,7 +134,6 @@ const percentageSolved = computed(() => {
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 0;
-  margin-bottom: 1rem;
 }
 
 .progress-label {
@@ -232,8 +229,7 @@ const percentageSolved = computed(() => {
   }
 
   .round-display {
-    padding: 0.75rem;
-    margin-bottom: 0.75rem;
+    padding: 0.25rem;
   }
 
   .round-label {
@@ -245,12 +241,11 @@ const percentageSolved = computed(() => {
   }
 
   .round-display q-icon {
-    font-size: 28px;
+    font-size: 20px;
   }
 
   .progress-section {
     padding: 0.5rem 0;
-    margin-bottom: 0.75rem;
   }
 
   .progress-label {
@@ -280,28 +275,5 @@ const percentageSolved = computed(() => {
   .time-value {
     font-size: 0.9rem;
   }
-}
-
-/* Dark Mode Styles */
-.body--dark .status-card {
-  background: rgba(30, 30, 45, 0.4);
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-}
-
-.body--dark .status-header {
-  border-bottom-color: rgba(255, 255, 255, 0.1);
-}
-
-.body--dark .round-display {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-}
-
-.body--dark .time-item {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.body--dark .time-item:hover {
-  background: rgba(255, 255, 255, 0.1);
 }
 </style>
