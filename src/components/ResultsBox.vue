@@ -248,4 +248,35 @@ const { anyGameEverStarted } = storeToRefs(gameStatusStore)
     font-size: 1rem;
   }
 }
+
+/* Dark Mode Styles */
+.body--dark .results-card {
+  background: rgba(30, 30, 45, 0.4);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.body--dark .results-header {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.body--dark .stat-item {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.body--dark .stat-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.body--dark .stat-icon-wrapper {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.body--dark .stat-icon-wrapper.success {
+  background: rgba(76, 175, 80, 0.2);
+}
+
+.body--dark .stat-icon-wrapper.error {
+  background: rgba(244, 67, 54, 0.2);
+}
 </style>

@@ -328,6 +328,24 @@ defineOptions({
   padding: 2rem;
 }
 
+/* Dark Mode Styles */
+.body--dark .game-page {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.body--dark .playing-page {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.body--dark .info-card {
+  background: rgba(30, 30, 45, 0.95);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.body--dark .deco-square {
+  background: rgba(255, 255, 255, 0.05);
+}
+
 .game-board-container {
   display: flex;
   align-items: flex-start;

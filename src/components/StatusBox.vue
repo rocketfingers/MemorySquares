@@ -281,4 +281,27 @@ const percentageSolved = computed(() => {
     font-size: 0.9rem;
   }
 }
+
+/* Dark Mode Styles */
+.body--dark .status-card {
+  background: rgba(30, 30, 45, 0.4);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.body--dark .status-header {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.body--dark .round-display {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+}
+
+.body--dark .time-item {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.body--dark .time-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
 </style>
