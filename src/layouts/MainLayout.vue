@@ -8,6 +8,7 @@
           </q-avatar>
           {{ title }}
         </q-toolbar-title>
+
         <div v-if="user" class="row items-center q-mr-md">
           <q-btn flat round class="q-mr-sm">
             <q-avatar size="md" class="q-mr-sm">
@@ -208,6 +209,11 @@ const logout = async () => {
 }
 
 const title = ref('Memory Squares')
+
+const goToMenu = () => {
+  gameStatusStore.isBoardShowned = false
+  window.location.href = '/'
+}
 
 defineOptions({
   name: 'MainLayout',
