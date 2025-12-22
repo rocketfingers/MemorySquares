@@ -246,28 +246,35 @@ const logout = async () => {
 const title = ref('Memory Squares')
 
 const goToMenu = () => {
-  $q.dialog({
-    title: 'Return to Menu?',
-    message: 'Your current game will be counted as a loss. Are you sure?',
-    cardClass: 'game-dialog-card',
-    persistent: true,
-    ok: {
-      label: 'Quit Game',
-      color: 'negative',
-      push: true,
-      icon: 'exit_to_app',
-    },
-    cancel: {
-      label: 'Keep Playing',
-      color: 'primary',
-      flat: true,
-      icon: 'play_arrow',
-    },
-  }).onOk(() => {
-    gameStatusStore.isBoardShowned = false
-    gameStatusStore.endGame(gameResults.LOSE)
+  let returnDialog = $q
+    .dialog({
+      title: 'Return to Menu?',
+      message: 'Your current game will be counted as a loss. Are you sure?',
+      cardClass: 'game-dialog-card',
+      persistent: true,
+      ok: {
+        label: 'Quit Game',
+        color: 'negative',
+        push: true,
+        icon: 'exit_to_app',
+      },
+      cancel: {
+        label: 'Keep Playing',
+        color: 'primary',
+        flat: true,
+        icon: 'play_arrow',
+      },
+    })
+    .onOk(() => {
+      gameStatusStore.isBoardShowned = false
+      gameStatusStore.endGame(gameResults.LOSE)
+      router.push('/')
+    })
 
-    router.push('/')
+  gameStatusStore.$subscribe((mutation, state) => {
+    if (!state.isBoardShowned) {
+      returnDialog.hide()
+    }
   })
 }
 
