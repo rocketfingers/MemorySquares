@@ -16,7 +16,19 @@
           icon="home"
           @click="goToMenu"
         />
-
+        <q-toggle
+          size="lg"
+          v-if="!user"
+          checked-icon="light_mode"
+          color="accent"
+          unchecked-icon="dark_mode"
+          class="q-mr-md"
+          false-value="Light"
+          true-value="Dark"
+          v-model="theme"
+          label="Theme:"
+          left-label
+        />
         <div v-if="user" class="row items-center q-mr-md">
           <q-btn flat round class="q-mr-sm">
             <q-avatar size="md" class="q-mr-sm">
@@ -81,20 +93,7 @@
             </q-menu>
           </q-btn>
         </div>
-        <div>
-          <q-toggle
-            size="lg"
-            v-if="!user"
-            checked-icon="light_mode"
-            color="accent"
-            unchecked-icon="dark_mode"
-            class="q-mr-md"
-            false-value="Light"
-            true-value="Dark"
-            v-model="theme"
-            label="Theme:"
-            left-label
-          />
+        <div v-if="!gameStatusStore.isBoardShowned">
           <q-btn v-if="!user" color="accent" @click="login" label="Login" icon="login" />
         </div>
       </q-toolbar>
