@@ -15,5 +15,30 @@
   .q-table {
     width: 90% !important;
   }
+
   /* Move pagination to left */
+}
+
+/* Global Game Dialog Styles */
+.game-dialog-card {
+  border-radius: 24px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
+  font-family: inherit;
+  overflow: hidden;
+}
+
+.game-dialog-card .q-card__section--title {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem !important;
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.game-dialog-card .q-btn {
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 8px 16px;
 }

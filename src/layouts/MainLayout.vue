@@ -174,9 +174,21 @@ onMounted(async () => {
 const deleteAccount = async () => {
   $q.dialog({
     title: 'Delete Account',
-    message: 'Are you sure you want to delete your account?',
-    cancel: true,
+    message: 'Are you sure you want to delete your account? This action cannot be undone.',
+    cardClass: 'game-dialog-card',
     persistent: true,
+    ok: {
+      label: 'Delete Forever',
+      color: 'negative',
+      push: true,
+      icon: 'delete_forever',
+    },
+    cancel: {
+      label: 'Cancel',
+      color: 'primary',
+      flat: true,
+      icon: 'close',
+    },
   }).onOk(async () => {
     await deleteAccountAfterWarning()
       .then(() => {
@@ -205,9 +217,21 @@ const login = async () => {
 const logout = async () => {
   $q.dialog({
     title: 'Logout',
-    message: 'Are you sure you want to logout?',
-    cancel: true,
+    message: 'Are you sure you want to log out?',
+    cardClass: 'game-dialog-card',
     persistent: true,
+    ok: {
+      label: 'Logout',
+      color: 'primary',
+      push: true,
+      icon: 'logout',
+    },
+    cancel: {
+      label: 'Stay',
+      color: 'grey-7',
+      flat: true,
+      icon: 'close',
+    },
   }).onOk(async () => {
     await auth.signOut()
     useGameStatusStore().$reset()
@@ -224,11 +248,22 @@ const title = ref('Memory Squares')
 
 const goToMenu = () => {
   $q.dialog({
-    title: 'Go to Menu',
-    message:
-      'Are you sure you want to go to the main menu? Your current game will be counted as lost?',
-    cancel: true,
+    title: 'Return to Menu?',
+    message: 'Your current game will be counted as a loss. Are you sure?',
+    cardClass: 'game-dialog-card',
     persistent: true,
+    ok: {
+      label: 'Quit Game',
+      color: 'negative',
+      push: true,
+      icon: 'exit_to_app',
+    },
+    cancel: {
+      label: 'Keep Playing',
+      color: 'primary',
+      flat: true,
+      icon: 'play_arrow',
+    },
   }).onOk(() => {
     gameStatusStore.isBoardShowned = false
     gameStatusStore.endGame(gameResults.LOSE)

@@ -85,16 +85,21 @@ const preStart = () => {
     router.push('/game')
   } else {
     $q.dialog({
-      title: 'Confirm',
-      message: `Your previous game is not finished. Do you want to continue from round ${lvl} or restart from round 1?`,
+      title: 'Resume Game?',
+      message: `You have a game in progress at Round ${lvl}. Would you like to continue?`,
+      cardClass: 'game-dialog-card',
       persistent: true,
       ok: {
         label: 'Continue',
-        flat: true,
+        color: 'primary',
+        push: true,
+        icon: 'play_arrow',
       },
       cancel: {
-        label: 'Restart',
+        label: 'New Game',
+        color: 'negative',
         flat: true,
+        icon: 'restart_alt',
       },
     })
       .onOk(() => {
