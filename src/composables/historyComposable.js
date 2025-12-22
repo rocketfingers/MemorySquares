@@ -155,18 +155,15 @@ export function useHistory() {
       // Clear Firestore history for authorized users
       const q = query(collection(db, 'gamesHistory'), where('userId', '==', currentUser.uid))
       const snapshot = await getDocs(q)
-      if (snapshot.empty) {
-        console.log('No matching documents for deletion.')
-        return
+      if (!snapshot.empty) {
+        await Promise.all(snapshot.docs.map((doc) => deleteDoc(doc.ref)))
       }
-      snapshot.docs.forEach((doc) => {
-        deleteDoc(doc.ref)
-      })
     }
 
     // Always clear local storage and reactive history
-    localHistory = []
-    history = []
+    localStorage.removeItem('gameHistory')
+    localHistory.length = 0
+    history.splice(0, history.length)
   }
 
   return {
