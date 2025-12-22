@@ -8,6 +8,14 @@
           </q-avatar>
           {{ title }}
         </q-toolbar-title>
+        <q-btn
+          class="q-mr-sm"
+          v-show="$route.path !== '/'"
+          round
+          color="accent"
+          icon="home"
+          @click="goToMenu"
+        />
 
         <div v-if="user" class="row items-center q-mr-md">
           <q-btn flat round class="q-mr-sm">
@@ -106,6 +114,10 @@ import { useGameStatusStore } from 'src/stores/gameStatusStore'
 import { useSettingStore } from 'src/stores/settingStore'
 import { getCurrentUser, useCurrentUser } from 'vuefire'
 import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
+import { gameResults } from 'src/gameResult.js'
+const router = useRouter()
+
 let user = useCurrentUser()
 const settingStore = useSettingStore()
 const { dontShowLoginPromptAgain, theme } = storeToRefs(settingStore)
@@ -211,8 +223,18 @@ const logout = async () => {
 const title = ref('Memory Squares')
 
 const goToMenu = () => {
-  gameStatusStore.isBoardShowned = false
-  window.location.href = '/'
+  $q.dialog({
+    title: 'Go to Menu',
+    message:
+      'Are you sure you want to go to the main menu? Your current game will be counted as lost?',
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    gameStatusStore.isBoardShowned = false
+    gameStatusStore.endGame(gameResults.LOSE)
+
+    router.push('/')
+  })
 }
 
 defineOptions({
