@@ -81,7 +81,7 @@
             </q-menu>
           </q-btn>
         </div>
-        <div v-show="!gameStatusStore.isBoardShowned">
+        <div>
           <q-toggle
             size="lg"
             v-if="!user"
