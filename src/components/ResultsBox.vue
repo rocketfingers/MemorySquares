@@ -11,7 +11,7 @@
       </div>
       <div class="stat-content">
         <div class="stat-label">Max Round</div>
-        <div class="stat-value">{{ maxRound }}</div>
+        <div class="stat-value">{{ maxRound ? maxRound : 0 }}</div>
       </div>
     </div>
 
@@ -60,6 +60,10 @@ let history = historyComposable.history
 
 const maxRound = computed(() => {
   try {
+    let isHistoryEmpty = !history || history.length === 0
+    if (isHistoryEmpty) {
+      return 0
+    }
     let roundsList = history.map((p) => p.round)
     return Math.max(...roundsList)
   } catch (error) {
