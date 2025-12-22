@@ -44,7 +44,9 @@ export function useTimer() {
   })
 
   // Clean up the timer when component unmounts
-  onBeforeUnmount(clearInterval(timer))
+    onBeforeUnmount(() => {
+    clearInterval(timer)
+  })
 
   return updateTime
 }
