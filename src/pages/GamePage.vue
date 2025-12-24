@@ -5,7 +5,11 @@
       <ResultsBox />
       <div
         class="mainDiv q-mt-xs"
-        :class="{ ['grid-container' + columns]: true, cursorNotAllowed: itemsNotClickable }"
+        :class="{
+          ['grid-container' + columns]: true,
+          cursorNotAllowed: itemsNotClickable,
+          rotated: isBoardRotated,
+        }"
       >
         <div
           v-ripple
@@ -64,10 +68,11 @@ const { columns, rectangles, itemsNotClickable, countOfValidClicked, countOfVali
 // Dialog state
 const lostDialog = ref(false)
 const wonDialog = ref(false)
+const isBoardRotated = ref(false)
 
 const startGame = () => {
   typeLost.value = null
-
+  isBoardRotated.value = false
   columns.value = gameBoard.calculateColumns(gameStatusStore.round)
   gameStatusStore.isBoardShowned = true
   gameBoard.assignRectangles()
@@ -75,6 +80,11 @@ const startGame = () => {
   itemsNotClickable.value = true
   window.setTimeout(() => {
     gameBoard.boardResultsShowOrHide(false)
+
+    // Rotate board by 90 degrees at round 3
+    if (gameStatusStore.round === 3 || gameStatusStore.round === 6) {
+      isBoardRotated.value = true
+    }
   }, timeConstants.PREVIEW_DURATION)
 }
 
@@ -205,6 +215,15 @@ defineOptions({
 .grid-container6 {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
+}
+
+/* Board rotation animation */
+.mainDiv {
+  transition: transform 0.5s ease-in-out;
+}
+
+.mainDiv.rotated {
+  transform: rotate(90deg);
 }
 
 .playing-page {
