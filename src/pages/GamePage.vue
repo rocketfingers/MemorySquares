@@ -161,8 +161,8 @@ defineOptions({
 
 .mainDiv {
   background-color: #ecc483;
-  width: 90vmin;
-  height: 90vmin;
+  width: 85vmin;
+  height: 85vmin;
   border: 2px;
 }
 
