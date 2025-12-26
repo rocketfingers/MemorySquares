@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
+  <!-- Memory Squares Logo - 4x4 Grid Pattern -->
+  
+  <!-- White background -->
+  <rect width="38" height="38" fill="#FFFFFF"/>
+  
+  <!-- Define colors from the logo -->
+  <!-- Row 1 -->
+  <rect x="1" y="1" width="8" height="8" fill="#2E61B8" stroke="#FFFFFF" stroke-width="0.5"/>
+  <rect x="10" y="1" width="8" height="8" fill="#3D3D45" stroke="#FFFFFF" stroke-width="0.5"/>
+  <rect x="19" y="1" width="8" height="8" fill="#2E61B8" stroke="#FFFFFF" stroke-width="0.5"/>
+  <rect x="28" y="1" width="8" height="8" fill="#47A1AD" stroke="#FFFFFF" stroke-width="0.5"/>
+  
+  <!-- Row 2 -->
+  <rect x="1" y="10" width="8" height="8" fill="#F06E61" stroke="#FFFFFF" stroke-width="0.5"/>
+  <rect x="10" y="10" width="8" height="8" fill="#2E61B8" stroke="#FFFFFF" stroke-width="0.5"/>
+  <rect x="19" y="10" width="8" height="8" fill="#3D3D45" stroke="#FFFFFF" stroke-width="0.5"/>
+  <rect x="28" y="10" width="8" height="8" fill="#2E61B8" stroke="#FFFFFF" stroke-width="0.5"/>
+  
+  <!-- Row 3 -->
+  <rect x="1" y="19" width="8" height="8" fill="#3D3D45" stroke="#FFFFFF" stroke-width="0.5"/>
+  <rect x="10" y="19" width="8" height="8" fill="#47A1AD" stroke="#FFFFFF" stroke-width="0.5"/>
+  <rect x="19" y="19" width="8" height="8" fill="#2E61B8" stroke="#FFFFFF" stroke-width="0.5"/>
+  <rect x="28" y="19" width="8" height="8" fill="#F7D647" stroke="#FFFFFF" stroke-width="0.5"/>
+  
+  <!-- Row 4 -->
+  <rect x="1" y="28" width="8" height="8" fill="#2E61B8" stroke="#FFFFFF" stroke-width="0.5"/>
+  <rect x="10" y="28" width="8" height="8" fill="#3D3D45" stroke="#FFFFFF" stroke-width="0.5"/>
+  <rect x="19" y="28" width="8" height="8" fill="#F06E61" stroke="#FFFFFF" stroke-width="0.5"/>
+  <rect x="28" y="28" width="8" height="8" fill="#2E61B8" stroke="#FFFFFF" stroke-width="0.5"/>
+</svg>
