@@ -69,5 +69,22 @@ export default [
     }
   },
 
+  {
+    files: [ 'test/**/*.{test,spec}.{js,mjs,cjs}' ],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+        vi: 'readonly'
+      }
+    }
+  },
+
   prettierSkipFormatting
 ]
