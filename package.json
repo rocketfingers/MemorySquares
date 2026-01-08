@@ -1,9 +1,9 @@
 {
   "name": "memorysquares",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A logic game",
   "productName": "Memory Squares",
-  "author": "Miroslaw Siwecki <m.siwecki@enterair.pl>",
+  "author": "Miroslaw Siwecki",
   "type": "module",
   "private": true,
   "scripts": {

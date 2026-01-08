@@ -1,8 +1,8 @@
 {
   "name": "memorysquares",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A logic game",
-  "author": "Miroslaw Siwecki <m.siwecki@enterair.pl>",
+  "author": "Miroslaw Siwecki",
   "private": true,
   "dependencies": {
     "@capacitor/android": "^7.0.0",
