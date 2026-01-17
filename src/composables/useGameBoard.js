@@ -5,6 +5,8 @@ import { ref, computed } from 'vue'
  * @param {Object} gameStatusStore - Pinia game status store instance
  * @returns {Object} Game board state and methods
  */
+import { levelsConfiguration } from 'src/levelsConfiguration.js'
+
 export function useGameBoard(gameStatusStore) {
   // Board state
   const columns = ref(3)
@@ -32,25 +34,21 @@ export function useGameBoard(gameStatusStore) {
     return rectangles.value.some((p) => p.isClicked === true && p.isValid === false)
   })
 
-  /**
+  /*
    * Determines if the grid should expand based on the round number
-   * Grid expands every 3 rounds (4, 7, 10) up to round 13
+   * kept for compatibility if needed, but logic is now in config
    */
-  const shouldAddColumns = (round) => {
-    return round % 3 === 1 && round !== 1 && round < 13
-  }
 
   /**
    * Calculates the number of columns for the current round
    */
   const calculateColumns = (round) => {
-    let cols = 3
-    for (let i = 1; i <= round; i++) {
-      if (shouldAddColumns(i)) {
-        cols++
-      }
+    const config = levelsConfiguration[round - 1]
+    if (config) {
+      return config.columns
     }
-    return cols
+    // Fallback for higher levels: max 6 columns
+    return 6
   }
 
   /**
@@ -175,7 +173,6 @@ export function useGameBoard(gameStatusStore) {
     // Methods
     assignRectangles,
     boardResultsShowOrHide,
-    shouldAddColumns,
     calculateColumns,
     handleItemClick,
     resetBoard,

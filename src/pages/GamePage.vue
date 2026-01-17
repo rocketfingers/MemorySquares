@@ -52,6 +52,7 @@ import GameWonDialog from 'src/components/GameWonDialog.vue'
 import GameLostDialog from 'src/components/GameLostDialog.vue'
 import { useQuasar } from 'quasar'
 import { timeConstants, typeOfLost } from 'src/gameConstants.js'
+import { levelsConfiguration } from 'src/levelsConfiguration.js'
 
 const $q = useQuasar()
 const router = useRouter()
@@ -81,8 +82,9 @@ const startGame = () => {
   window.setTimeout(() => {
     gameBoard.boardResultsShowOrHide(false)
 
-    // Rotate board by 90 degrees at round 3
-    if (gameStatusStore.round === 3 || gameStatusStore.round === 6) {
+    // Check rotation from config
+    const config = levelsConfiguration[gameStatusStore.round - 1]
+    if (config && config.rotate) {
       isBoardRotated.value = true
     }
   }, timeConstants.PREVIEW_DURATION)
@@ -90,10 +92,7 @@ const startGame = () => {
 
 const nextLevel = () => {
   gameStatusStore.round++
-
-  if (gameBoard.shouldAddColumns(gameStatusStore.round)) {
-    columns.value++
-  }
+  columns.value = gameBoard.calculateColumns(gameStatusStore.round)
   startGame()
 }
 
