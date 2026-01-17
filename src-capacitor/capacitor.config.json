@@ -1,5 +1,15 @@
 {
   "appId": "org.memorysquares.msi.app",
   "appName": "Memory Squares",
-  "webDir": "www"
+  "webDir": "www",
+  "plugins": {
+    "SystemBars": {
+      "insetsHandling": "disable"
+    },
+    "EdgeToEdge": {
+      "backgroundColor": "#8E54E9",
+      "statusBarColor": "#8E54E9",
+      "navigationBarColor": "#8E54E9"
+    }
+  }
 }
