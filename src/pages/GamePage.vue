@@ -219,7 +219,7 @@ defineOptions({
 
 /* Board rotation animation */
 .mainDiv {
-  transition: transform 0.5s ease-in-out;
+  transition: transform 1s ease-in-out;
 }
 
 .mainDiv.rotated {
