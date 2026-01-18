@@ -258,26 +258,47 @@ defineOptions({
   .game-board-container {
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 1rem; /* Increased gap */
+    align-items: stretch; /* Make cards equal height */
   }
 
   .game-board-container .mainDiv {
     order: 1;
     width: 100%;
+    height: auto !important; /* Override fixed height to allow aspect-ratio to work */
+    aspect-ratio: 1/1; /* Ensure it stays square */
+    margin-bottom: 2rem; /* Increased space below board to be safe */
+    max-width: 100%;
   }
 
   .game-board-container .results-card {
     order: 2;
-    width: calc(50% - 0.25rem);
+    flex: 1; /* Grow to fill space */
+    width: auto; /* Let flex handle width */
+    min-width: 0; /* Allow shrinking below content size if needed to fit */
   }
 
   .game-board-container .status-card {
     order: 3;
-    width: calc(50% - 0.25rem);
+    flex: 1; /* Grow to fill space */
+    width: auto; /* Let flex handle width */
+    min-width: 0;
+  }
+
+  /* Target deep elements just in case, though root class selection works */
+  :deep(.results-card),
+  :deep(.status-card) {
+    height: 100%;
+    min-width: auto !important; /* Override component min-width */
+    width: 100% !important; /* Ensure they fill the flex item */
   }
 
   .playing-page {
     padding: 1rem;
+    align-items: flex-start; /* Prevent centering vertically causing overlap if height > 100vh */
+    height: auto; /* Allow growth */
+    min-height: 100vh;
+    overflow-y: auto; /* Enable scroll if needed */
   }
 }
 </style>

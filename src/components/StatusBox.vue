@@ -42,7 +42,7 @@
         </div>
       </div>
 
-      <div class="time-item">
+      <div v-show="!$q.platform.is.mobile" class="time-item">
         <q-icon name="schedule" size="24px" color="white" />
         <div class="time-content">
           <div class="time-label">Total Time</div>
