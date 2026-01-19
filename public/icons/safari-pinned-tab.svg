@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <!-- Memory Squares Logo - Safari Pinned Tab (monochrome) -->
+  <!-- 4x4 grid with rounded corners -->
+
+  <!-- Row 1 -->
+  <rect x="0.5" y="0.5" width="3.25" height="3.25" rx="0.3" fill="#000000"/>
+  <rect x="4.25" y="0.5" width="3.25" height="3.25" rx="0.3" fill="#000000"/>
+  <rect x="8" y="0.5" width="3.25" height="3.25" rx="0.3" fill="#000000"/>
+  <rect x="11.75" y="0.5" width="3.25" height="3.25" rx="0.3" fill="#000000"/>
+
+  <!-- Row 2 -->
+  <rect x="0.5" y="4.25" width="3.25" height="3.25" rx="0.3" fill="#000000"/>
+  <rect x="4.25" y="4.25" width="3.25" height="3.25" rx="0.3" fill="#000000"/>
+  <rect x="8" y="4.25" width="3.25" height="3.25" rx="0.3" fill="#000000"/>
+  <rect x="11.75" y="4.25" width="3.25" height="3.25" rx="0.3" fill="#000000"/>
+
+  <!-- Row 3 -->
+  <rect x="0.5" y="8" width="3.25" height="3.25" rx="0.3" fill="#000000"/>
+  <rect x="4.25" y="8" width="3.25" height="3.25" rx="0.3" fill="#000000"/>
+  <rect x="8" y="8" width="3.25" height="3.25" rx="0.3" fill="#000000"/>
+  <rect x="11.75" y="8" width="3.25" height="3.25" rx="0.3" fill="#000000"/>
+
+  <!-- Row 4 -->
+  <rect x="0.5" y="11.75" width="3.25" height="3.25" rx="0.3" fill="#000000"/>
+  <rect x="4.25" y="11.75" width="3.25" height="3.25" rx="0.3" fill="#000000"/>
+  <rect x="8" y="11.75" width="3.25" height="3.25" rx="0.3" fill="#000000"/>
+  <rect x="11.75" y="11.75" width="3.25" height="3.25" rx="0.3" fill="#000000"/>
+</svg>
