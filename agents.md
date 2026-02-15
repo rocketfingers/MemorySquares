@@ -12,6 +12,45 @@ Created in Vue 3 with Quasar and Capacitor
 
 - Use pnpm
 
+## Commit Naming Convention
+
+This project follows the [Conventional Commits](https://www.conventionalcommits.org/) specification.
+
+### Format
+
+```
+<type>: <short description>
+```
+
+### Types
+
+- `feat` — A new feature or enhancement to existing functionality
+- `fix` — A bug fix
+- `style` — Visual/UI changes (styling, layout, cosmetic updates)
+- `chore` — Maintenance tasks (config, dependencies, .gitignore, etc.)
+- `build` — Build system or version changes
+- `test` — Adding or updating tests
+- `refactor` — Code restructuring without changing behavior
+- `docs` — Documentation changes
+
+### Guidelines
+
+- Use lowercase for the type and description
+- Keep the description short and imperative (e.g., "add pwa support", not "added pwa support")
+- No period at the end of the description
+- Focus on *what* was done, not *how*
+
+### Examples
+
+```
+feat: add board rotation feature for specific game rounds
+fix: ensure return home dialog hides when game board is not shown
+style: enhance layout responsiveness for mobile
+chore: update .gitignore to include bun.lock and pnpm-lock.yaml
+test: set up Vitest testing framework
+build: version 1.0.0
+```
+
 ## Testing
 
 Unit testing is set up using Vitest with Vue Test Utils and happy-dom.
