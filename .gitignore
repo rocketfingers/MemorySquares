@@ -40,3 +40,6 @@ yarn.lock
 
 # Test coverage
 coverage
+bun.lock
+.gitignore
+pnpm-lock.yaml
