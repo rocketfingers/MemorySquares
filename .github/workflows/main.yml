@@ -2,7 +2,7 @@ name: CI - Test & Auto-merge
 
 on:
   push:
-    branches: [develop]
+    branches: [development]
 
 jobs:
   test:
@@ -37,10 +37,10 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Merge develop into main
+      - name: Merge development into main
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout main
-          git merge develop --no-edit
+          git merge development --no-edit
           git push origin main
