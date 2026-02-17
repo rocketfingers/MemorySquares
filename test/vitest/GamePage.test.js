@@ -549,9 +549,9 @@ describe('GamePage.vue', () => {
       expect(wrapper.vm.isBoardRotated).toBe(true)
     })
 
-    it('rotates board at round 6', async () => {
+    it('rotates board at round 9', async () => {
       const store = useGameStatusStore()
-      store.round = 6
+      store.round = 9
 
       router.push('/game')
       await router.isReady()

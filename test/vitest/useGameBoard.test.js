@@ -121,34 +121,6 @@ describe('useGameBoard', () => {
     })
   })
 
-  describe('shouldAddColumns', () => {
-    it('returns true for rounds 4, 7, 10', () => {
-      const gameBoard = useGameBoard(mockStore)
-
-      expect(gameBoard.shouldAddColumns(4)).toBe(true)
-      expect(gameBoard.shouldAddColumns(7)).toBe(true)
-      expect(gameBoard.shouldAddColumns(10)).toBe(true)
-    })
-
-    it('returns false for round 1', () => {
-      const gameBoard = useGameBoard(mockStore)
-      expect(gameBoard.shouldAddColumns(1)).toBe(false)
-    })
-
-    it('returns false for round 13 and above', () => {
-      const gameBoard = useGameBoard(mockStore)
-      expect(gameBoard.shouldAddColumns(13)).toBe(false)
-      expect(gameBoard.shouldAddColumns(14)).toBe(false)
-    })
-
-    it('returns false for non-expansion rounds', () => {
-      const gameBoard = useGameBoard(mockStore)
-      expect(gameBoard.shouldAddColumns(2)).toBe(false)
-      expect(gameBoard.shouldAddColumns(3)).toBe(false)
-      expect(gameBoard.shouldAddColumns(5)).toBe(false)
-    })
-  })
-
   describe('calculateColumns', () => {
     it('returns 3 for round 1', () => {
       const gameBoard = useGameBoard(mockStore)
@@ -160,19 +132,24 @@ describe('useGameBoard', () => {
       expect(gameBoard.calculateColumns(4)).toBe(4)
     })
 
-    it('returns 5 for round 7', () => {
+    it('returns 4 for round 7', () => {
       const gameBoard = useGameBoard(mockStore)
-      expect(gameBoard.calculateColumns(7)).toBe(5)
+      expect(gameBoard.calculateColumns(7)).toBe(4)
     })
 
-    it('returns 6 for round 10', () => {
+    it('returns 5 for round 10', () => {
       const gameBoard = useGameBoard(mockStore)
-      expect(gameBoard.calculateColumns(10)).toBe(6)
+      expect(gameBoard.calculateColumns(10)).toBe(5)
     })
 
-    it('returns 6 for round 13 (no more expansion)', () => {
+    it('returns 5 for round 13', () => {
       const gameBoard = useGameBoard(mockStore)
-      expect(gameBoard.calculateColumns(13)).toBe(6)
+      expect(gameBoard.calculateColumns(13)).toBe(5)
+    })
+
+    it('returns 6 for round 21 and above', () => {
+      const gameBoard = useGameBoard(mockStore)
+      expect(gameBoard.calculateColumns(21)).toBe(6)
     })
   })
 
