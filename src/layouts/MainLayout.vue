@@ -141,16 +141,26 @@ watch(
 const askToLogin = () => {
   $q.notify({
     progress: true,
-    message: 'Please login to store your progress on multiple devices',
-    icon: 'arrow_forward',
-    position: 'top',
-    color: 'accent',
-    multiLine: true,
-    avatar: 'https://cdn.quasar.dev/img/boy-avatar.png',
+    message: 'Login to sync your progress across devices',
+    icon: 'sync',
+    position: 'top-right',
+    color: 'primary',
+    textColor: 'white',
+    classes: 'login-prompt-notify',
+    timeout: 8000,
     actions: [
       {
-        label: "Don't show again",
-        color: 'yellow',
+        label: 'Login',
+        color: 'white',
+        flat: true,
+        handler: () => {
+          login()
+        },
+      },
+      {
+        label: 'Dismiss',
+        color: 'white',
+        flat: true,
         handler: () => {
           dontShowLoginPromptAgain.value = true
         },
